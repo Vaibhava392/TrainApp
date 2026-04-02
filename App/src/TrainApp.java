@@ -1,29 +1,35 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TrainApp: A Management System for Train Consists.
- * This class demonstrates the entry point of a Java application and
- * the initialization of dynamic collections.
- */
 public class TrainApp {
 
     public static void main(String[] args) {
-        // 1. Application prints welcome message
-        System.out.println("=== Train Consist Management App ===");
+        System.out.println("=== Train Consist Management App: UC2 ===");
 
-        /* * 2. Train consist is initialized
-         * Key Concept: Using the List interface with ArrayList implementation.
-         * This allows the consist to grow dynamically as bogies are added.
-         */
-        List<String> trainConsist = new ArrayList<>();
+        // 1. Create an ArrayList for passenger bogies
+        List<String> bogies = new ArrayList<>();
 
-        // 3. Initial bogie count is displayed
-        // Key Concept: Using the size() method to get the current count.
-        int initialCount = trainConsist.size();
-        System.out.println("Initial bogie count: " + initialCount);
+        // 2. Add bogies: Sleeper, AC Chair, First Class
+        // Key Concept: add() appends elements and preserves insertion order.
+        bogies.add("Sleeper");
+        bogies.add("AC Chair");
+        bogies.add("First Class");
 
-        // 4. Program continues
-        System.out.println("System initialized and ready for operation.");
+        // 3. Print the list after insertion
+        System.out.println("Current Bogies: " + bogies);
+
+        // 4. Remove one bogie (AC Chair)
+        // Key Concept: remove() shifts subsequent elements to fill the gap.
+        bogies.remove("AC Chair");
+        System.out.println("After removing AC Chair: " + bogies);
+
+        // 5. Use contains() to check if 'Sleeper' exists
+        // Key Concept: contains() returns a boolean (true/false).
+        boolean hasSleeper = bogies.contains("Sleeper");
+        System.out.println("Is 'Sleeper' in the consist? " + hasSleeper);
+
+        // 6. Print final list state
+        System.out.println("Final Train Consist: " + bogies);
+        System.out.println("Total bogies remaining: " + bogies.size());
     }
 }
