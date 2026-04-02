@@ -1,40 +1,40 @@
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * TrainApp UC5: Ordered Unique Formation.
- * Demonstrates how LinkedHashSet prevents duplicates while keeping the
- * physical attachment sequence intact.
+ * TrainApp UC6: Bogie Capacity Mapping.
+ * Demonstrates the use of Key-Value pairs to store operational data.
  */
 public class TrainApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Train Formation (LinkedHashSet) ===");
+        System.out.println("=== Train Capacity Registry (HashMap) ===");
 
-        // 1. Create a LinkedHashSet for the formation
-        // Key Concept: Set interface ensures uniqueness; LinkedHashSet ensures order.
-        Set<String> formation = new LinkedHashSet<>();
+        // 1. Create a HashMap: String (Bogie Name) -> Integer (Capacity)
+        // Key Concept: Map interface used for declaration.
+        Map<String, Integer> capacityMap = new HashMap<>();
 
-        // 2. Attach bogies
-        formation.add("Engine");
-        formation.add("Sleeper");
-        formation.add("Cargo");
-        formation.add("Guard");
+        // 2. Insert bogie-capacity mapping using put()
+        // Key-Value Association: Key (Unique) -> Value (Can be duplicates)
+        capacityMap.put("Sleeper", 72);
+        capacityMap.put("AC Chair", 56);
+        capacityMap.put("First Class", 24);
+        capacityMap.put("General", 90);
 
-        // 3. Attempt to attach a duplicate bogie (Sleeper)
-        // Key Concept: The system will identify the duplicate and ignore it.
-        System.out.println("Attempting to add duplicate: 'Sleeper'...");
-        boolean isAdded = formation.add("Sleeper");
+        // 3. System iterates through the map
+        // Key Concept: entrySet() allows us to access both Key and Value in a loop.
+        System.out.println("\nBogie Capacity Details:");
+        for (Map.Entry<String, Integer> entry : capacityMap.entrySet()) {
+            String bogieType = entry.getKey();
+            Integer capacity = entry.getValue();
 
-        System.out.println("Was duplicate Sleeper added? " + isAdded);
+            // 4. Display details
+            System.out.println("Bogie: " + bogieType + " | Capacity: " + capacity + " seats");
+        }
 
-        // 4. Display the final formation
-        // Key Concept: Insertion Order Preservation.
-        // Unlike UC3, this will ALWAYS print in the order added.
-        System.out.println("\nFinal Train Formation:");
-        System.out.println(formation);
-
-        // 5. Verification
-        System.out.println("Total unique bogies in sequence: " + formation.size());
+        // 5. Fast Lookup Demonstration
+        // HashMap allows instant retrieval if you know the key.
+        System.out.println("\nChecking specific capacity for 'AC Chair'...");
+        System.out.println("Result: " + capacityMap.get("AC Chair") + " seats");
     }
 }
