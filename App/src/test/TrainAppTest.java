@@ -2,12 +2,10 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
- * TrainApp UC9 Test: Data Aggregation with groupingBy().
- * Verifies that flat list data can be transformed into a structured Map.
+ * TrainApp UC10: Numeric Reduction.
+ * Demonstrates transforming objects into values and reducing them to a sum.
  */
 public class TrainAppTest {
 
@@ -22,41 +20,39 @@ public class TrainAppTest {
 
         @Override
         public String toString() {
-            return String.format("[Cap: %d]", capacity);
+            return String.format("%s (%d)", name, capacity);
         }
     }
 
     public static void main(String[] args) {
-        // --- SETUP: Create the test data with duplicate names for grouping ---
+        // --- SETUP: Data Initialized ---
         List<Bogie> train = new ArrayList<>();
         train.add(new Bogie("Sleeper", 72));
-        train.add(new Bogie("Sleeper", 72));
         train.add(new Bogie("AC Chair", 56));
+        train.add(new Bogie("First Class", 24));
         train.add(new Bogie("General", 90));
-        train.add(new Bogie("AC Chair", 56));
 
-        System.out.println("Running UC9 Test Case: Grouping by Name...");
+        System.out.println("Running UC10 Test Case: Total Capacity Calculation...");
 
-        // --- EXECUTION: Apply groupingBy() ---
-        // Classification function: b -> b.name (The Key in the Map)
-        // Values: List of Bogie objects belonging to that name
-        Map<String, List<Bogie>> groupedBogies = train.stream()
-                .collect(Collectors.groupingBy(b -> b.name));
+        // --- EXECUTION: map() and reduce() ---
+        // Step 1: mapToInt extracts the capacity
+        // Step 2: sum() (a specialized reduction) or reduce(0, Integer::sum)
+        int totalCapacity = train.stream()
+                .map(b -> b.capacity)
+                .reduce(0, Integer::sum);
 
-        // --- VERIFICATION: Validate the Map structure ---
-        boolean hasThreeGroups = (groupedBogies.size() == 3);
-        int sleeperCount = groupedBogies.get("Sleeper").size();
+        // --- VERIFICATION ---
+        int expectedSum = 72 + 56 + 24 + 90; // 242
 
         System.out.println("------------------------------------");
-        System.out.println("Grouped Result:");
-        groupedBogies.forEach((name, list) ->
-                System.out.println(name + " Type -> " + list));
+        System.out.println("Train Composition: " + train);
+        System.out.println("Calculated Total Capacity: " + totalCapacity);
 
-        if (hasThreeGroups && sleeperCount == 2) {
-            System.out.println("\nTEST STATUS: PASSED ✅");
-            System.out.println("Reason: Data correctly aggregated into 3 distinct categories.");
+        if (totalCapacity == expectedSum) {
+            System.out.println("TEST STATUS: PASSED ✅");
+            System.out.println("Reason: Reduction correctly summed all 4 bogies to " + expectedSum);
         } else {
-            System.out.println("\nTEST STATUS: FAILED ❌");
+            System.out.println("TEST STATUS: FAILED ❌");
         }
         System.out.println("------------------------------------");
     }
