@@ -1,39 +1,40 @@
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
- * TrainApp UC4: Physical Train Coupling (LinkedList).
- * Demonstrates node-based insertion and deletion at specific positions.
+ * TrainApp UC5: Ordered Unique Formation.
+ * Demonstrates how LinkedHashSet prevents duplicates while keeping the
+ * physical attachment sequence intact.
  */
 public class TrainApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Train Assembly (LinkedList) ===");
+        System.out.println("=== Train Formation (LinkedHashSet) ===");
 
-        // 1. Create a LinkedList for the consist
-        // Note: We use LinkedList type to access specific methods like addFirst/addLast
-        LinkedList<String> train = new LinkedList<>();
+        // 1. Create a LinkedHashSet for the formation
+        // Key Concept: Set interface ensures uniqueness; LinkedHashSet ensures order.
+        Set<String> formation = new LinkedHashSet<>();
 
-        // 2. Add initial bogies
-        train.add("Engine");
-        train.add("Sleeper");
-        train.add("AC");
-        train.add("Cargo");
-        train.add("Guard");
+        // 2. Attach bogies
+        formation.add("Engine");
+        formation.add("Sleeper");
+        formation.add("Cargo");
+        formation.add("Guard");
 
-        System.out.println("Initial Train: " + train);
+        // 3. Attempt to attach a duplicate bogie (Sleeper)
+        // Key Concept: The system will identify the duplicate and ignore it.
+        System.out.println("Attempting to add duplicate: 'Sleeper'...");
+        boolean isAdded = formation.add("Sleeper");
 
-        // 3. Insert a Pantry Car at position 2 (Index 2)
-        // Key Concept: LinkedList easily makes room for new nodes in the middle.
-        train.add(2, "Pantry Car");
-        System.out.println("After adding Pantry Car: " + train);
+        System.out.println("Was duplicate Sleeper added? " + isAdded);
 
-        // 4. Remove the first and last bogie
-        // Key Concept: removeFirst() and removeLast() are unique to LinkedList/Deque.
-        train.removeFirst(); // Removes Engine
-        train.removeLast();  // Removes Guard
+        // 4. Display the final formation
+        // Key Concept: Insertion Order Preservation.
+        // Unlike UC3, this will ALWAYS print in the order added.
+        System.out.println("\nFinal Train Formation:");
+        System.out.println(formation);
 
-        // 5. Display the final ordered train consist
-        System.out.println("Final Operational Consist: " + train);
-        System.out.println("Current Head: " + train.peekFirst());
+        // 5. Verification
+        System.out.println("Total unique bogies in sequence: " + formation.size());
     }
 }
