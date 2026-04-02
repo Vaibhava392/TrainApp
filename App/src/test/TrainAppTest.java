@@ -2,11 +2,12 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * TrainApp UC8: Filtering with Stream API.
- * Demonstrates processing collections using functional pipelines.
+ * TrainApp UC9 Test: Data Aggregation with groupingBy().
+ * Verifies that flat list data can be transformed into a structured Map.
  */
 public class TrainAppTest {
 
@@ -21,30 +22,42 @@ public class TrainAppTest {
 
         @Override
         public String toString() {
-            return String.format("%s (%d seats)", name, capacity);
+            return String.format("[Cap: %d]", capacity);
         }
     }
 
     public static void main(String[] args) {
-        // 1. Create a List of Bogies (Reused from UC7)
+        // --- SETUP: Create the test data with duplicate names for grouping ---
         List<Bogie> train = new ArrayList<>();
         train.add(new Bogie("Sleeper", 72));
+        train.add(new Bogie("Sleeper", 72));
         train.add(new Bogie("AC Chair", 56));
-        train.add(new Bogie("First Class", 24));
         train.add(new Bogie("General", 90));
+        train.add(new Bogie("AC Chair", 56));
 
-        System.out.println("Original Train: " + train);
+        System.out.println("Running UC9 Test Case: Grouping by Name...");
 
-        // 2. Convert to Stream, 3. Filter, 4. Collect
-        // We are filtering for High-Capacity bogies (> 60 seats)
-        List<Bogie> highCapacityBogies = train.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // --- EXECUTION: Apply groupingBy() ---
+        // Classification function: b -> b.name (The Key in the Map)
+        // Values: List of Bogie objects belonging to that name
+        Map<String, List<Bogie>> groupedBogies = train.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
 
-        // 5. Display the filtered bogies
-        System.out.println("=== High Capacity Bogies (> 60 seats) ===");
-        highCapacityBogies.forEach(System.out::println);
+        // --- VERIFICATION: Validate the Map structure ---
+        boolean hasThreeGroups = (groupedBogies.size() == 3);
+        int sleeperCount = groupedBogies.get("Sleeper").size();
 
-        System.out.println("\nProgram continues...");
+        System.out.println("------------------------------------");
+        System.out.println("Grouped Result:");
+        groupedBogies.forEach((name, list) ->
+                System.out.println(name + " Type -> " + list));
+
+        if (hasThreeGroups && sleeperCount == 2) {
+            System.out.println("\nTEST STATUS: PASSED ✅");
+            System.out.println("Reason: Data correctly aggregated into 3 distinct categories.");
+        } else {
+            System.out.println("\nTEST STATUS: FAILED ❌");
+        }
+        System.out.println("------------------------------------");
     }
 }
