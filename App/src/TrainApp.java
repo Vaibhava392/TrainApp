@@ -1,38 +1,39 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 /**
- * TrainApp UC3: Unique Bogie ID Management.
- * Demonstrates the behavior of Sets: Uniqueness and Unordered storage.
+ * TrainApp UC4: Physical Train Coupling (LinkedList).
+ * Demonstrates node-based insertion and deletion at specific positions.
  */
 public class TrainApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Train ID Registry (HashSet) ===");
+        System.out.println("=== Train Assembly (LinkedList) ===");
 
-        // 1. Create a HashSet for bogie IDs
-        // Key Concept: Set interface is used for the reference type.
-        Set<String> bogieIds = new HashSet<>();
+        // 1. Create a LinkedList for the consist
+        // Note: We use LinkedList type to access specific methods like addFirst/addLast
+        LinkedList<String> train = new LinkedList<>();
 
-        // 2. Add bogie IDs (including intentional duplicates)
-        bogieIds.add("B-101");
-        bogieIds.add("B-102");
-        bogieIds.add("B-103");
+        // 2. Add initial bogies
+        train.add("Engine");
+        train.add("Sleeper");
+        train.add("AC");
+        train.add("Cargo");
+        train.add("Guard");
 
-        // Attempting to add a duplicate ID
-        System.out.println("Adding duplicate ID: B-101...");
-        bogieIds.add("B-101");
+        System.out.println("Initial Train: " + train);
 
-        // 3. Observe Automatic Deduplication
-        // Key Concept: The add() method returns false if the item already exists.
-        boolean addedAgain = bogieIds.add("B-102");
-        System.out.println("Was B-102 added again? " + addedAgain);
+        // 3. Insert a Pantry Car at position 2 (Index 2)
+        // Key Concept: LinkedList easily makes room for new nodes in the middle.
+        train.add(2, "Pantry Car");
+        System.out.println("After adding Pantry Car: " + train);
 
-        // 4. Display Unique IDs
-        // Key Concept: Unordered Storage. The output order may differ from insertion.
-        System.out.println("\nRegistered Unique Bogie IDs:");
-        System.out.println(bogieIds);
+        // 4. Remove the first and last bogie
+        // Key Concept: removeFirst() and removeLast() are unique to LinkedList/Deque.
+        train.removeFirst(); // Removes Engine
+        train.removeLast();  // Removes Guard
 
-        System.out.println("Total Unique Bogies: " + bogieIds.size());
+        // 5. Display the final ordered train consist
+        System.out.println("Final Operational Consist: " + train);
+        System.out.println("Current Head: " + train.peekFirst());
     }
 }
