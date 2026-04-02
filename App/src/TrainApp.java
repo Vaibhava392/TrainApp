@@ -1,35 +1,38 @@
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+/**
+ * TrainApp UC3: Unique Bogie ID Management.
+ * Demonstrates the behavior of Sets: Uniqueness and Unordered storage.
+ */
 public class TrainApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App: UC2 ===");
+        System.out.println("=== Train ID Registry (HashSet) ===");
 
-        // 1. Create an ArrayList for passenger bogies
-        List<String> bogies = new ArrayList<>();
+        // 1. Create a HashSet for bogie IDs
+        // Key Concept: Set interface is used for the reference type.
+        Set<String> bogieIds = new HashSet<>();
 
-        // 2. Add bogies: Sleeper, AC Chair, First Class
-        // Key Concept: add() appends elements and preserves insertion order.
-        bogies.add("Sleeper");
-        bogies.add("AC Chair");
-        bogies.add("First Class");
+        // 2. Add bogie IDs (including intentional duplicates)
+        bogieIds.add("B-101");
+        bogieIds.add("B-102");
+        bogieIds.add("B-103");
 
-        // 3. Print the list after insertion
-        System.out.println("Current Bogies: " + bogies);
+        // Attempting to add a duplicate ID
+        System.out.println("Adding duplicate ID: B-101...");
+        bogieIds.add("B-101");
 
-        // 4. Remove one bogie (AC Chair)
-        // Key Concept: remove() shifts subsequent elements to fill the gap.
-        bogies.remove("AC Chair");
-        System.out.println("After removing AC Chair: " + bogies);
+        // 3. Observe Automatic Deduplication
+        // Key Concept: The add() method returns false if the item already exists.
+        boolean addedAgain = bogieIds.add("B-102");
+        System.out.println("Was B-102 added again? " + addedAgain);
 
-        // 5. Use contains() to check if 'Sleeper' exists
-        // Key Concept: contains() returns a boolean (true/false).
-        boolean hasSleeper = bogies.contains("Sleeper");
-        System.out.println("Is 'Sleeper' in the consist? " + hasSleeper);
+        // 4. Display Unique IDs
+        // Key Concept: Unordered Storage. The output order may differ from insertion.
+        System.out.println("\nRegistered Unique Bogie IDs:");
+        System.out.println(bogieIds);
 
-        // 6. Print final list state
-        System.out.println("Final Train Consist: " + bogies);
-        System.out.println("Total bogies remaining: " + bogies.size());
+        System.out.println("Total Unique Bogies: " + bogieIds.size());
     }
 }
