@@ -3,51 +3,28 @@ import java.util.Arrays;
 public class TrainApp {
 
     public static void main(String[] args) {
-        int[] capacities = {72, 56, 24, 70, 60, 90, 15};
+        // 1. Create an array of bogie type names
+        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
 
-        System.out.println("=== Passenger Bogie Capacity Sort (UC16 - Bubble Sort) ===");
-        System.out.println("Before Sorting: " + Arrays.toString(capacities));
+        System.out.println("=== Bogie Name Sorting (UC17 - Arrays.sort) ===");
+        System.out.println("Before Sorting: " + Arrays.toString(bogieTypes));
 
-        bubbleSort(capacities);
+        // 2. Use Arrays.sort() for optimized alphabetical sorting (O(n log n))
+        Arrays.sort(bogieTypes);
 
-        System.out.println("After Sorting : " + Arrays.toString(capacities));
+        // 3. Display the sorted result
+        System.out.println("After Sorting : " + Arrays.toString(bogieTypes));
 
-        System.out.println("\n--- Additional Test Cases ---");
+        System.out.println("\n--- Testing Unsorted & Duplicates ---");
 
-        int[] duplicates = {72, 56, 56, 24};
-        bubbleSort(duplicates);
-        System.out.println("Duplicate Handling: " + Arrays.toString(duplicates));
+        // Test Case: Unsorted Input with Duplicates
+        String[] unsortedBogies = {"Luxury", "General", "Sleeper", "AC Chair", "General"};
+        Arrays.sort(unsortedBogies);
+        System.out.println("Sorted Result : " + Arrays.toString(unsortedBogies));
 
-        int[] single = {50};
-        bubbleSort(single);
-        System.out.println("Single Element   : " + Arrays.toString(single));
-    }
-
-    public static void columnSort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    // Swapping Logic
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
-    }
-
-    // Explicitly using the Bubble Sort Logic as per requirements
-    public static void bubbleSort(int[] arr) {
-        int n = arr.length;
-        for (int i = 0; i < n - 1; i++) {
-            for (int j = 0; j < n - i - 1; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int temp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = temp;
-                }
-            }
-        }
+        // Test Case: Single Element Array
+        String[] singleBogie = {"Sleeper"};
+        Arrays.sort(singleBogie);
+        System.out.println("Single Element: " + Arrays.toString(singleBogie));
     }
 }
