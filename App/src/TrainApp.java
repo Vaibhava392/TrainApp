@@ -1,51 +1,43 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * TrainApp UC7: Custom Sorting with Comparator.
- * Demonstrates how to sort objects based on specific internal fields.
- */
 public class TrainApp {
 
-    // 1. Create a Bogie class (Static nested class for this example)
-    static class Bogie {
-        String name;
-        int capacity;
-
-        Bogie(String name, int capacity) {
-            this.name = name;
-            this.capacity = capacity;
-        }
-
-        // Overriding toString to make printing easy
-        @Override
-        public String toString() {
-            return String.format("%s (%d seats)", name, capacity);
-        }
-    }
-
     public static void main(String[] args) {
-        System.out.println("=== Passenger Bogie Sorting (Comparator) ===");
+        Scanner scanner = new Scanner(System.in);
 
-        // 2. Create a List<Bogie> and add objects
-        List<Bogie> train = new ArrayList<>();
-        train.add(new Bogie("Sleeper", 72));
-        train.add(new Bogie("AC Chair", 56));
-        train.add(new Bogie("First Class", 24));
-        train.add(new Bogie("General", 90));
+        System.out.println("=== Train System Validation (UC11) ===");
 
-        System.out.println("Before Sorting: " + train);
+        System.out.print("Enter Train ID (Format: TRN-1234): ");
+        String trainIdInput = scanner.nextLine();
 
-        // 3. Apply a Comparator to sort by capacity (Ascending)
-        // Key Concept: Lambda Expression used for concise sorting logic
-        train.sort(Comparator.comparingInt(b -> b.capacity));
+        System.out.print("Enter Cargo Code (Format: PET-AB): ");
+        String cargoCodeInput = scanner.nextLine();
 
-        // 4. Sorted bogies are displayed
-        System.out.println("After Sorting (Capacity Low to High): " + train);
+        Pattern trainIdPattern = Pattern.compile("TRN-\\d{4}");
+        Pattern cargoCodePattern = Pattern.compile("PET-[A-Z]{2}");
 
-        // Optional: Sorting in reverse (High to Low)
-        train.sort(Comparator.comparingInt((Bogie b) -> b.capacity).reversed());
-        System.out.println("After Sorting (Capacity High to Low): " + train);
+        Matcher trainIdMatcher = trainIdPattern.matcher(trainIdInput);
+        Matcher cargoCodeMatcher = cargoCodePattern.matcher(cargoCodeInput);
+
+        boolean isTrainIdValid = trainIdMatcher.matches();
+        boolean isCargoCodeValid = cargoCodeMatcher.matches();
+
+        System.out.println("\n--- Validation Results ---");
+
+        if (isTrainIdValid) {
+            System.out.println("Train ID [" + trainIdInput + "]: VALID");
+        } else {
+            System.out.println("Train ID [" + trainIdInput + "]: INVALID (Required format: TRN-xxxx)");
+        }
+
+        if (isCargoCodeValid) {
+            System.out.println("Cargo Code [" + cargoCodeInput + "]: VALID");
+        } else {
+            System.out.println("Cargo Code [" + cargoCodeInput + "]: INVALID (Required format: PET-XX)");
+        }
+
+        scanner.close();
     }
 }
