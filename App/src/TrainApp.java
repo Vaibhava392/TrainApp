@@ -1,30 +1,45 @@
-import java.util.Arrays;
-
 public class TrainApp {
 
     public static void main(String[] args) {
-        // 1. Create an array of bogie type names
-        String[] bogieTypes = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        String[] bogieIds = {"BG101", "BG205", "BG309", "BG412", "BG550"};
 
-        System.out.println("=== Bogie Name Sorting (UC17 - Arrays.sort) ===");
-        System.out.println("Before Sorting: " + Arrays.toString(bogieTypes));
+        System.out.println("=== Bogie ID Search (UC18 - Linear Search) ===");
 
-        // 2. Use Arrays.sort() for optimized alphabetical sorting (O(n log n))
-        Arrays.sort(bogieTypes);
+        // Test Case: Search Match Found
+        String searchKey1 = "BG309";
+        performLinearSearch(bogieIds, searchKey1);
 
-        // 3. Display the sorted result
-        System.out.println("After Sorting : " + Arrays.toString(bogieTypes));
+        // Test Case: Search Match Not Found
+        String searchKey2 = "BG999";
+        performLinearSearch(bogieIds, searchKey2);
 
-        System.out.println("\n--- Testing Unsorted & Duplicates ---");
+        // Test Case: First Element Match
+        String searchKey3 = "BG101";
+        performLinearSearch(bogieIds, searchKey3);
 
-        // Test Case: Unsorted Input with Duplicates
-        String[] unsortedBogies = {"Luxury", "General", "Sleeper", "AC Chair", "General"};
-        Arrays.sort(unsortedBogies);
-        System.out.println("Sorted Result : " + Arrays.toString(unsortedBogies));
+        // Test Case: Last Element Match
+        String searchKey4 = "BG550";
+        performLinearSearch(bogieIds, searchKey4);
+    }
 
-        // Test Case: Single Element Array
-        String[] singleBogie = {"Sleeper"};
-        Arrays.sort(singleBogie);
-        System.out.println("Single Element: " + Arrays.toString(singleBogie));
+    public static void performLinearSearch(String[] arr, String key) {
+        boolean found = false;
+        int indexFound = -1;
+
+        System.out.print("Searching for " + key + ": ");
+
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(key)) {
+                found = true;
+                indexFound = i;
+                break; // Early Termination
+            }
+        }
+
+        if (found) {
+            System.out.println("FOUND at index " + indexFound);
+        } else {
+            System.out.println("NOT FOUND");
+        }
     }
 }
