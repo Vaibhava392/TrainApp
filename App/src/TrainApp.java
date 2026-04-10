@@ -3,56 +3,69 @@ import java.util.Arrays;
 public class TrainApp {
 
     public static void main(String[] args) {
-        System.out.println("=== Bogie ID Search (UC19 - Binary Search) ===");
+        System.out.println("=== Bogie Search with State Validation (UC20) ===");
 
-        // Initial Unsorted Data
-        String[] bogieIds = {"BG309", "BG101", "BG550", "BG205", "BG412"};
+        String[] activeBogies = {"BG101", "BG205", "BG309"};
+        String[] emptyBogies = {};
 
-        // 1. Precondition: Data must be sorted for Binary Search
-        Arrays.sort(bogieIds);
-        System.out.println("Sorted Bogie IDs: " + Arrays.toString(bogieIds));
+        try {
+            System.out.println("Test: Searching in valid data...");
+            performValidatedSearch(activeBogies, "BG205");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        // Test Case: Search Match Found (Middle/Random)
-        performBinarySearch(bogieIds, "BG309");
+        try {
+            System.out.println("\nTest: Searching in empty data...");
+            performValidatedSearch(emptyBogies, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Caught Expected Exception: " + e.getMessage());
+        }
 
-        // Test Case: First Element Match
-        performBinarySearch(bogieIds, "BG101");
+        try {
+            System.out.println("\nTest: Searching for non-existent bogie...");
+            performValidatedSearch(activeBogies, "BG999");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
 
-        // Test Case: Last Element Match
-        performBinarySearch(bogieIds, "BG550");
-
-        // Test Case: Search Match Not Found
-        performBinarySearch(bogieIds, "BG999");
-
-        // Test Case: Empty Array Handling
-        performBinarySearch(new String[]{}, "BG101");
+        try {
+            System.out.println("\nTest: Single element case...");
+            performValidatedSearch(new String[]{"BG101"}, "BG101");
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 
-    public static void performBinarySearch(String[] arr, String key) {
-        int low = 0;
-        int high = arr.length - 1;
-        int foundIndex = -1;
+    public static void performValidatedSearch(String[] bogies, String key) {
+        if (bogies == null || bogies.length == 0) {
+            throw new IllegalStateException("Search operation failed: No bogies available in the collection.");
+        }
 
-        System.out.print("Searching for " + key + ": ");
+        Arrays.sort(bogies);
+
+        int low = 0;
+        int high = bogies.length - 1;
+        boolean found = false;
 
         while (low <= high) {
             int mid = low + (high - low) / 2;
-            int comparison = key.compareTo(arr[mid]);
+            int comp = key.compareTo(bogies[mid]);
 
-            if (comparison == 0) {
-                foundIndex = mid;
-                break; // Found
-            } else if (comparison > 0) {
-                low = mid + 1; // Search right half
+            if (comp == 0) {
+                found = true;
+                break;
+            } else if (comp > 0) {
+                low = mid + 1;
             } else {
-                high = mid - 1; // Search left half
+                high = mid - 1;
             }
         }
 
-        if (foundIndex != -1) {
-            System.out.println("FOUND at index " + foundIndex);
+        if (found) {
+            System.out.println("Result: Bogie " + key + " identified in system.");
         } else {
-            System.out.println("NOT FOUND");
+            System.out.println("Result: Bogie " + key + " not found.");
         }
     }
 }
